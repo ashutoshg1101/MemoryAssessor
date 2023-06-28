@@ -5,11 +5,12 @@ var user = [];
 var started = false;
 var chance = 3;
 var isRunning = true;
+var highScore = 0;
 startGame();
 
 
 $('.btn').on('click',function(e){
-  if(!isRunning)
+  if(!isRunning && started===true)
   {
       var clickSound = new Audio('SoundEffects/clickSound.mp3');
       var wrongSound = new Audio('SoundEffects/wrongAnswer.mp3');
@@ -52,9 +53,11 @@ function check()
     else
     {
       chance--;
-      $("h2").html("Chance : "+chance);
+      $(".chance").html("Chance : "+chance);
       if(chance <= 0)
       {
+        highScore = Math.max(highScore,level-1);
+        $(".highScore").html("HighScore : "+highScore);
         gameOver();                           //Chance Khatam ... Game over
         return false
       }
@@ -67,10 +70,10 @@ function gameOver()
 {
   var gameoverSound = new Audio('SoundEffects/GameOver.MP3');
   gameoverSound.play();
-  started = false;
+  // started = false;
   $("h1").html("Press any key to Restart...");
-  $("h2").html("Your Score : "+level);
-  restartGame();
+  $(".chance").html("Your Score : "+(level-1));
+  setTimeout(restartGame,1000);
 }
 
 function startGame()
@@ -86,7 +89,18 @@ function startGame()
       // document.querySelector("h1").innerHTML = "level : "+level;
       $("h1").html("Level : "+level);
       // $(".container").after("<h2></h2>");
-      $("h2").html("Chance : "+chance);
+      $(".chance").html("Chance : "+chance);
+      animation();
+    }
+  })
+  $(document).on('click',function(){
+    if(started === false)
+    {
+      started = true;
+      // document.querySelector("h1").innerHTML = "level : "+level;
+      $("h1").html("Level : "+level);
+      // $(".container").after("<h2></h2>");
+      $(".chance").html("Chance : "+chance);
       animation();
     }
   })
@@ -98,15 +112,27 @@ function restartGame()
   CPU = [];
   user = [];
   chance = 3;
+  started = false;
   $(document).keypress(function(){
     if(started === false)
     {
       started = true;
       $("h1").html("Level : "+level);
-      $("h2").html("Chance : "+chance);
+      $(".chance").html("Chance : "+chance);
       animation();
     }
   })
+  // $(document).on('click',function(){
+  //   if(started === false)
+  //   {
+  //     started = true;
+  //     // document.querySelector("h1").innerHTML = "level : "+level;
+  //     $("h1").html("Level : "+level);
+  //     // $(".container").after("<h2></h2>");
+  //     $("h2").html("Chance : "+chance);
+  //     animation();
+  //   }
+  // })
 }
 
 
